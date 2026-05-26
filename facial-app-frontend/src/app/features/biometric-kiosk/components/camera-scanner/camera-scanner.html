@@ -1,0 +1,93 @@
+<div class="w-full flex flex-col items-center justify-center p-2">
+  <div class="relative group w-full max-w-2xl flex flex-col items-center">
+    <div
+      class="w-full aspect-video bg-slate-900 rounded-3xl overflow-hidden relative border-4 border-slate-100 shadow-2xl shadow-slate-200/50 flex items-center justify-center transition-all duration-300 group-hover:border-slate-200"
+      >
+    @if (cameraStatus() !== 'active' && cameraStatus() !== 'verifying'){
+      <img
+        alt="Technical background overlay"
+        class="absolute inset-0 opacity-20 grayscale pointer-events-none object-cover size-full"
+        data-alt="Abstract glowing technology network lines on deep blue and black background with bokeh highlights"
+        src="/images/background.webp"
+      />
+    }
+      <video 
+        #cameraVideo
+        autoplay
+        playsinline
+        muted
+        class="absolute inset-0 object-cover w-full h-full scale-x-[-1]">
+      </video>
+
+      <canvas #photoCanvas class="hidden"></canvas>
+
+      <div class="absolute inset-0 border-24 border-slate-900/50 pointer-events-none"></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-primary/40 rounded-full animate-pulse"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-primary/20 rounded-full"
+      ></div>
+      <div class="absolute top-10 left-10 w-8 h-8 border-t-2 border-l-2 border-primary"></div>
+      <div class="absolute top-10 right-10 w-8 h-8 border-t-2 border-r-2 border-primary"></div>
+      <div class="absolute bottom-10 left-10 w-8 h-8 border-b-2 border-l-2 border-primary"></div>
+      <div class="absolute bottom-10 right-10 w-8 h-8 border-b-2 border-r-2 border-primary"></div>
+      @if (welcomeMessage()) {
+        <div class="absolute inset-0 bg-emerald-950/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center gap-3 animate-fade-in">
+          <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 class="text-white text-xl font-bold tracking-tight">{{ welcomeMessage() }}</h3>
+          <p class="text-emerald-300 text-xs uppercase font-mono tracking-widest">Asistencia Registrada</p>
+        </div>
+      }
+        
+      @if (cameraStatus() !== 'active' && cameraStatus() !== 'verifying') {
+        <div class="z-10 flex flex-col items-center gap-4">  
+          <div
+            class="w-20 h-20 rounded-full bg-slate-800/80 backdrop-blur-md flex items-center justify-center border border-white/10 shadow-xl"
+          >
+            <svg class="w-10 h-10 text-white fill-current">
+              <use href="sprite.svg#face-icon" />
+            </svg>
+          </div>
+          <p class="text-white/60 text-xs font-mono tracking-widest uppercase">
+            Coloque su rostro
+          </p>
+        </div>
+
+        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 bg-white backdrop-blur-md border outline-gray-700 px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-[11px] font-semibold uppercase tracking-tighter">Sistema activo</span>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="text-center w-full flex flex-col mt-1 items-center">
+    <h2 class="text-2xl font-bold text-slate-900 tracking-tight mb-1">Escaneo de precisión</h2>
+    <p class="text-sm text-slate-500 max-w-sm text-center">
+      Alinee su rostro con la guía central para una validación biométrica instantánea.
+    </p>
+  <div class="flex flex-col w-full max-w-xs gap-3 my-2 mx-auto">
+    <app-primary-button 
+      class="w-full"
+      [label]="buttonLabel()"
+      [icon]="cameraStatus() === 'active' || cameraStatus() === 'verifying' ? 'close-icon' : 'qr-code-scanner-icon'"
+      (click)="toggleCamera()">
+    </app-primary-button>
+    @if (cameraStatus() === 'active' || cameraStatus() === 'verifying') {
+      <app-primary-button 
+        class="w-full"
+        [label]="cameraStatus() === 'verifying' ? 'Analizando...' : 'Fichar Asistencia'"
+        icon="camera-icon"
+        (click)="capturePhoto()">
+      </app-primary-button>
+    }
+  </div>
+    <p class="text-xs text-on-surface-variant max-w-xs text-center">
+      Los datos biométricos se procesan localmente y <strong>nunca se almacenan como imágenes sin procesar</strong>.
+    </p>
+  </div>
+</div>

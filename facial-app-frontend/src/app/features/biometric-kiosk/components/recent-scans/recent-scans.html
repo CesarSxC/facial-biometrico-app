@@ -1,0 +1,22 @@
+<aside class="flex flex-col gap-4">
+  <div class="bg-surface-container-low rounded-2xl p-4">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="font-bold text-on-surface">Escaneos recientes</h3>
+      <svg class="size-5 fill-current">
+        <use href="sprite.svg#history-icon" />
+      </svg>      
+    </div>
+    <div class="flex-1 overflow-y-auto flex flex-col gap-3">
+      @for (scan of scans(); track scan.id) { 
+        <app-scan-card [record]="scan"></app-scan-card>
+          } @empty {
+            <div class="flex-1 flex items-center justify-center text-sm text-slate-400">
+              No hay registros hoy.
+            </div>
+          }
+        </div>
+      <!--<button class="mt-5 w-full py-3 rounded-lg border border-slate-200 text-xs font-bold text-slate-600  hover:bg-slate-50 transition-colors uppercase tracking-widest active:scale-[0.98]">
+        Ver registros completos
+      </button>!-->
+  </div>
+</aside>

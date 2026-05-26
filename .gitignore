@@ -1,0 +1,13 @@
+facial-app-frontend/node_modules/
+facial-app-frontend/.angular/
+facial-app-frontend/dist/
+
+facial-app-backend/node_modules/
+facial-app-backend/dist/
+facial-app-backend/.env
+
+facial-app/venv/
+facial-app/.venv/
+facial-app/__pycache__/
+facial-app/*.pyc
+facial-app/.env

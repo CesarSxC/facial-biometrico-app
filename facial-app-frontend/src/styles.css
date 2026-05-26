@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #5e5e62;
+  --color-on-primary: #f9f7fb;
+  --color-bermuda: #78dcca;
+  --color-surface-container-low: #f0f4f7;
+  --color-on-surface: #2a3439;
+  --font-sans: "Inter", sans-serif;
+  --color-outline-variant: #a9b4b9;
+}
+
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter.woff2") format("woff2");
+}
+
+body {
+  @apply bg-slate-50 text-slate-800 font-sans antialiased;
+}
