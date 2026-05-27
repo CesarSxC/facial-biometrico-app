@@ -1,8 +1,11 @@
 # Motor de IA y Visión
-opencv-python==4.13.0.92
-numpy
+numpy==1.26.4
+opencv-python==4.9.0.80
+dlib
 face_recognition
-
+face_recognition_models==0.3.0
+setuptools==69.5.1
 # Motor de tu API web
 fastapi
 uvicorn
+python-multipart
