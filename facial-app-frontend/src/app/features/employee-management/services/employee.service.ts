@@ -14,6 +14,9 @@ export class EmployeeService {
   // Signal de estado de empleados
   private employeesData = signal<Employee[]> ([])
   employees = this.employeesData.asReadonly();
+
+  private scanRefreshSource = new Subject<void>();
+  scanRefresh = this.scanRefreshSource.asObservable()
   
   // Peticion HTTP para obtener y buscar los empleados
   loadEmployees(search?: string): void {
@@ -29,6 +32,10 @@ export class EmployeeService {
       },
       error: (err) => console.error('Error cargando empleados:', err)
     });
+  }
+
+  notifyNewScan() {
+  this.scanRefreshSource.next();
   }
   
   //Funcion para crear un empleado, omitimos los datos que hara el backend de Employee

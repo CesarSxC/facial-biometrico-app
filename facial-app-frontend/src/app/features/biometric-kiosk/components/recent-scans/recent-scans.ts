@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ScanCard } from '../scan-card/scan-card';
 import { EmployeeService } from '../../../employee-management/services/employee.service';
 import { ScanRecord } from '../../models/scan-record.interface';
@@ -12,12 +12,18 @@ import { ScanRecord } from '../../models/scan-record.interface';
 export class RecentScans implements OnInit {
 
   private attendanceService = inject(EmployeeService);
-
+  private destroyRef = inject(DestroyRef);
   scans = signal<ScanRecord[]>([]);
+  
   isLoading = signal<boolean>(true);
 
   ngOnInit(): void {
     this.loadScans();
+    const sub = this.attendanceService.scanRefresh.subscribe(() => {
+      this.loadScans();
+    });
+
+    this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 
   loadScans(): void {

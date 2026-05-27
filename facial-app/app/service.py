@@ -53,7 +53,7 @@ class FaceRecognitionService:
           nombre = nombres_conocidos[first_match_index]
         resultados.append({"nombre": nombre})
         
-      return resultados
+    return resultados
 
 @lru_cache()
 def get_face_service():

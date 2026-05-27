@@ -1,0 +1,8 @@
+# Motor de IA y Visión
+opencv-python==4.13.0.92
+numpy
+face_recognition
+
+# Motor de tu API web
+fastapi
+uvicorn

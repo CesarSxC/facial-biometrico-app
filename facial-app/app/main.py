@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, Depends
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Depends
 from app.service import FaceRecognitionService, get_face_service
 import json
 
@@ -23,7 +23,9 @@ async def enrolar_rostro(
       "vector": vector_generado
     }
   except Exception as e:
-    return {"status": "error", "message": str(e)}
+    raise HTTPException(status_code=400, detail=str(e))
+  except Exception as e:
+    raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")
 
 @app.post("/reconocer")
 async def reconocer_rostro(
@@ -43,5 +45,7 @@ async def reconocer_rostro(
       "filename": file.filename,
       "data": faces_found      
     }
+  except ValueError as e:
+    raise HTTPException(status_code=400, detail=str(e))
   except Exception as e:
-    return {"status": "error", "message": str(e)}
+    raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")

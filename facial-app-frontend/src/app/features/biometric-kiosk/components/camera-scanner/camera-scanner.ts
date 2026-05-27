@@ -1,6 +1,7 @@
 import { Component, computed, ElementRef, inject, signal, viewChild, OnDestroy } from '@angular/core';
 import { PrimaryButton } from '../../../../shared/components/primary-botton/primary-button';
 import { KioskService } from '../../services/kiosk.service';
+import { EmployeeService } from '../../../employee-management/services/employee.service';
 
 @Component({
   selector: 'app-camera-scanner',
@@ -11,6 +12,7 @@ import { KioskService } from '../../services/kiosk.service';
 export class CameraScanner implements OnDestroy {
 
   private kioskService = inject(KioskService);
+  private employeeService = inject(EmployeeService);
 
   // Acceso a los elementos HTML
   cameraVideo = viewChild<ElementRef<HTMLVideoElement>>('cameraVideo');
@@ -73,6 +75,7 @@ export class CameraScanner implements OnDestroy {
         const name = response.message ? response.message.split('usuario: ')[1] : 'Empleado';
         this.welcomeMessage.set(`¡Bienvenido, ${name}!`);
         
+        this.employeeService.notifyNewScan();
         this.cameraStatus.set('active'); 
         this.capturedImage.set(null);
         setTimeout(() => {
@@ -81,7 +84,7 @@ export class CameraScanner implements OnDestroy {
       },
       error: (err) => {
         console.error('Acceso denegado o error de IA:', err);
-        alert('Rostro no reconocido. Por favor, acérquese más a la cámara e intente de nuevo.');
+        alert('Rostro no reconocido. Por favor, registrese en el apartado de "Gestión de empleados" e intentelo de nuevo');
         
         this.cameraStatus.set('active');
         this.capturedImage.set(null); 
@@ -106,6 +109,7 @@ export class CameraScanner implements OnDestroy {
       alert('Activar la cámara del navegador.');
     }
   }
+  
 
   private stopCamera(): void {
     if (this.mediaStream) {
