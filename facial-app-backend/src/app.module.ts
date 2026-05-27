@@ -14,7 +14,7 @@ import { HttpModule } from '@nestjs/axios';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('DB_HOST'),
+        host: process.env.DB_HOST || 'localhost',
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),

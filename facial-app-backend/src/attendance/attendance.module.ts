@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entiti';
 import { Attendance } from './entities/attendance.entiti';
 import { HttpModule } from '@nestjs/axios';
-import { PythonApiService } from 'src/utils/python-api/python-api.service';
+import { PythonApiService } from '../utils/python-api/python-api.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Employee, Attendance]), HttpModule],

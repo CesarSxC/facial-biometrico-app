@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # 1. Tu Base de Datos (MySQL)
+  mysql-db:
+    image: mysql:8.0
+    container_name: biometrico_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: biometric_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. Tu Microservicio de IA
+  ia-python:
+    build: ./facial-app
+    container_name: biometrico_ia
+    ports:
+      - "8000:8000"
+    restart: always
+
+  # 3. Tu Backend Principal (NestJS con Bun)
+  backend-nestjs:
+    build: ./facial-app-backend
+    container_name: biometrico_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-db
+      - ia-python
+    environment:
+      - DB_HOST=mysql-db 
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=biometric_db
+      - IA_API_URL=http://ia-python:8000 
+
+  # 4. Tu Frontend (Angular con Nginx)
+  frontend-angular:
+    build: ./facial-app-frontend
+    container_name: biometrico_frontend
+    # Nginx expone el puerto 80 por defecto por dentro, tú lo verás en el 4200 por fuera
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend-nestjs
+
+volumes:
+  # Esto asegura que tus empleados registrados no se borren si apagas Docker
+  db_data:

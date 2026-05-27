@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # 1. Tu Base de Datos (MySQL)
+  mysql-db:
+    image: mysql:8.0
+    container_name: biometrico_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: biometrico_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. Tu Microservicio de Inteligencia Artificial
+  ia-python:
+    build: ./facial-app
+    container_name: biometrico_ia
+    ports:
+      - "8000:8000"
+    restart: always
+
+  # 3. Tu Backend Principal
+  backend-nestjs:
+    build: ./facial-app-backend
+    container_name: biometrico_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-db
+      - ia-python
+    environment:
+      # MAGIA DOCKER: En lugar de "localhost", NestJS hablará con los contenedores por su nombre
+      - DB_HOST=mysql-db 
+      - IA_API_URL=http://ia-python:8000 
+
+  # 4. Tu Frontend 
+  frontend-angular:
+    build: ./facial-app-frontend
+    container_name: biometrico_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend-nestjs
+
+volumes:
+  db_data: # Esto evita que se borren los empleados si reinicias el servidor
