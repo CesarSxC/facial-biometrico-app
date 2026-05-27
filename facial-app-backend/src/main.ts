@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const configService = app.get(ConfigService);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -13,7 +13,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const configService = app.get(ConfigService);
   const frontendUrl =
     configService.get<string>('FRONTEND_URL') || 'http://localhost:4200';
 
