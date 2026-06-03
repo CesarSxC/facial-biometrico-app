@@ -13,7 +13,7 @@ El sistema se divide en tres componentes principales:
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend:** Angular 17, TypeScript, Tailwind CSS, RxJS, Bun.
-- **Backend:** NestJS, Node.js, TypeORM, PostgreSQL/MySQL.
+- **Backend:** NestJS, Node.js, TypeORM, MySQL.
 - **Inteligencia Artificial:** Python, OpenCV, DeepFace / Face Recognition.
 - **Herramientas de Entorno:** Git (Monorepo), Docker (opcional).
 
