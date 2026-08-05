@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Instalamos las librerías de Python
+RUN pip install cmake
+RUN MAKEFLAGS="-j1" pip install dlib
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiamos todo el código de la aplicación
