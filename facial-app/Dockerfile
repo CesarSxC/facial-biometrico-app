@@ -1,30 +1,29 @@
-# Usamos una versión oficial y ligera de Python
-FROM python:3.10-slim
+# 1. Usar Miniconda para evitar compilar dlib desde cero
+FROM continuumio/miniconda3
 
-# Le decimos a Docker en qué carpeta interna trabajar
+# 2. Le decimos a Docker en qué carpeta interna trabajar
 WORKDIR /app
 
-# ¡CLAVE! Instalamos los compiladores de C++ y herramientas de video que dlib y OpenCV necesitan en Linux
+# 3. Instalamos las herramientas de video que OpenCV necesita en Linux
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
     libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiamos nuestra armadura (las versiones exactas)
+# 4. ¡LA MAGIA! Instalamos dlib ya pre-compilado usando conda
+RUN conda install -c conda-forge dlib -y
+
+# 5. Copiamos nuestra armadura
 COPY requirements.txt .
 
-# Instalamos las librerías de Python
-RUN pip install cmake
-RUN MAKEFLAGS="-j1" pip install dlib
+# 6. Instalamos el resto de las librerías de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiamos todo el código de la aplicación
+# 7. Copiamos todo el código de la aplicación
 COPY . .
 
-# Exponemos el puerto
+# 8. Exponemos el puerto
 EXPOSE 8000
 
-# El comando para arrancar FastAPI (nota que usamos 0.0.0.0 para que se pueda ver desde afuera del contenedor)
+# 9. El comando para arrancar FastAPI (usamos el mismo que ya tenías)
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
