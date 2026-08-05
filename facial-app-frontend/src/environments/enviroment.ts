@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://facial-biometrico-app-production.up.railway.app'
+  apiUrl: 'https://api-biometrica.onrender.com'
 };
