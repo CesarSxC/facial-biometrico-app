@@ -1,5 +1,5 @@
 # 1. Usar Miniconda para evitar compilar dlib desde cero
-FROM continuumio/miniconda3
+FROM conda-forge/miniforge3
 RUN conda install python=3.10 -y
 # 2. Le decimos a Docker en qué carpeta interna trabajar
 WORKDIR /app
